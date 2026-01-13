@@ -1,0 +1,1902 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>StoreStock – Mockup (Dark)</title>
+    <style>
+      :root {
+        --brand: #2563eb;
+        --text: #e6e9f2;
+        --muted: #9aa1b2;
+        --bg: #0b0d12;
+        --panel: #121625;
+        --panel-2: #0e1220;
+        --border: #232941;
+        --ok: #059669;
+        --warn: #d97706;
+        --danger: #dc2626;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font: 14px/1.5 system-ui, -apple-system, Segoe UI, Roboto, Inter,
+          sans-serif;
+      }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+      .hidden {
+        display: none !important;
+      }
+
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 16px;
+        border-bottom: 1px solid var(--border);
+        background: var(--panel);
+        position: sticky;
+        top: 0;
+        z-index: 10;
+      }
+      .brand {
+        font-weight: 700;
+        letter-spacing: 0.2px;
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 12px;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        background: var(--panel);
+        cursor: pointer;
+        color: #fff;
+      }
+      .btn.primary {
+        background: var(--brand);
+        color: #fff;
+        border-color: transparent;
+      }
+      .btn.danger {
+        background: var(--panel);
+        color: #ffbdbd;
+        border-color: #5c1a1a;
+      }
+      .layout {
+        display: grid;
+        grid-template-columns: 240px 1fr;
+        min-height: 100vh;
+      }
+      .sidebar {
+        background: var(--panel);
+        border-right: 1px solid var(--border);
+        padding: 16px 10px;
+        position: sticky;
+        top: 49px;
+        height: calc(100vh - 49px);
+      }
+      .nav a {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 12px;
+        border-radius: 10px;
+        color: #d6dbe6;
+      }
+      .nav a.active,
+      .nav a:hover {
+        background: var(--panel-2);
+        color: #fff;
+      }
+      .content {
+        padding: 18px;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+      .pagehead {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        margin: 6px 0 14px;
+      }
+      h1 {
+        font-size: 20px;
+        margin: 0;
+      }
+      .card-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+      }
+      .card {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 14px;
+      }
+      .card h3 {
+        margin: 0 0 8px;
+        font-size: 16px;
+      }
+      .muted {
+        color: var(--muted);
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        overflow: hidden;
+      }
+      th,
+      td {
+        padding: 10px 12px;
+        border-bottom: 1px solid var(--border);
+        text-align: left;
+        vertical-align: middle;
+      }
+      thead th {
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: #aeb6c8;
+        background: var(--panel-2);
+      }
+      .toolbar {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin: 12px 0;
+      }
+      input,
+      select,
+      textarea {
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 8px 10px;
+        background: #0e1220;
+        color: #fff;
+      }
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 2px 8px;
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        font-size: 12px;
+        background: #101628;
+        color: #dde3f1;
+      }
+      .chip.low {
+        background: rgba(220, 38, 38, 0.15);
+        color: #ffd4d4;
+        border-color: #5c1a1a;
+      }
+      .right {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+      }
+      /* Modal */
+      .backdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.55);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 16px;
+      }
+      .modal {
+        width: min(720px, 95vw);
+        background: var(--panel);
+        border-radius: 14px;
+        border: 1px solid var(--border);
+        padding: 16px;
+      }
+      .grid-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+      .field {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      label {
+        font-size: 12px;
+        color: var(--muted);
+      }
+      .toast {
+        position: fixed;
+        right: 16px;
+        bottom: 16px;
+        background: #0e1220;
+        border: 1px solid var(--border);
+        padding: 10px 12px;
+        border-radius: 10px;
+        display: none;
+        color: #fff;
+      }
+      @media (max-width: 960px) {
+        .layout {
+          grid-template-columns: 80px 1fr;
+        }
+        .sidebar .label {
+          display: none;
+        }
+        .card-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+      @media (max-width: 640px) {
+        .card-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .login-wrap {
+        display: grid;
+        place-items: center;
+        min-height: 100vh;
+        padding: 20px;
+      }
+      .login {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 20px;
+        max-width: 360px;
+        width: 100%;
+        box-shadow: 0 6px 24px rgba(0, 0, 0, 0.2);
+      }
+      .login h2 {
+        margin: 0 0 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <section id="view-login" class="login-wrap">
+      <div class="login">
+        <h2>Sign in to <span style="color: var(--brand)">StoreStock</span></h2>
+        <p class="muted" style="margin-top: -6px">
+          Access your inventory portal
+        </p>
+        <div class="field">
+          <label>Email</label>
+          <input id="login-username" placeholder="Username" />
+        </div>
+        <div class="field">
+          <label>Password</label
+          ><input id="login-pass" type="password" placeholder="••••••••" />
+          <div id="login-error" style="color:#ff8080; margin-top:8px;"></div>
+        </div>
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 12px;
+          "
+        >
+          <div class="muted" style="font-size: 12px">
+            
+          </div>
+          <button class="btn primary" onclick="loginUser()">Login</button>
+
+        </div>
+      </div>
+    </section>
+
+    <section id="view-app" class="hidden">
+      <div class="topbar">
+        <div class="brand">🏪 StoreStock</div>
+        <div class="right">
+          <button class="btn" onclick="show('view-dashboard')">
+            Dashboard
+          </button>
+          <button class="btn">🔔</button>
+          <button class="btn" onclick="openRegisterModal()">👤 Add User</button>
+          <button class="btn" onclick="logoutUser()">Logout</button>
+        </div>
+      </div>
+
+      <div class="layout">
+        <aside class="sidebar">
+          <nav class="nav">
+            <a href="#" class="active" onclick="show('view-dashboard')"
+              >🏠 <span class="label">Dashboard</span></a
+            >
+            <a href="#" onclick="show('view-items')"
+              >📋 <span class="label">Manage item</span></a
+            >
+            <a href="#" onclick="show('view-categories')"
+              >🏷️ <span class="label">Manage categories</span></a
+            >
+            <a href="#" onclick="show('view-transactions')"
+              >🔁 <span class="label">Record transaction</span></a
+            >
+            <a href="#" onclick="show('view-suppliers')"
+              >🤝 <span class="label">Manage supplier</span></a
+            >
+            <a href="#" onclick="show('view-po')"
+              >🧾 <span class="label">Create purchase order</span></a
+            >
+            <a href="#" onclick="show('view-reports')"
+              >📊 <span class="label">View report</span></a
+            >
+          </nav>
+        </aside>
+
+        <main class="content">
+          <div id="view-dashboard">
+            <div class="pagehead"><h1>Dashboard</h1></div>
+            <div class="card-grid">
+              <div class="card">
+                <h3>Manage item</h3>
+                <p class="muted">
+                  View list of items, add new, edit, or delete.
+                </p>
+                <button class="btn primary" onclick="show('view-items')">
+                  Open
+                </button>
+              </div>
+              <div class="card">
+                <h3>Manage categories</h3>
+                <p class="muted">
+                  Add, edit, or delete categories (same pattern as items).
+                </p>
+                <button class="btn primary" onclick="show('view-categories')">
+                  Open
+                </button>
+              </div>
+              <div class="card">
+                <h3>Record transaction</h3>
+                <p class="muted">
+                  Choose item and amount to add in, take out, or adjust.
+                </p>
+                <button class="btn primary" onclick="show('view-transactions')">
+                  Open
+                </button>
+              </div>
+              <div class="card">
+                <h3>Manage supplier</h3>
+                <p class="muted">Add supplier, contacts, and notes.</p>
+                <button class="btn" onclick="show('view-suppliers')">
+                  Open
+                </button>
+              </div>
+              <div class="card">
+                <h3>Create purchase order</h3>
+                <p class="muted">Draft, send, and receive POs.</p>
+                <button class="btn" onclick="show('view-po')">Open</button>
+              </div>
+              <div class="card">
+                <h3>View report</h3>
+                <p class="muted">
+                  Low stock, valuation, and movement summaries.
+                </p>
+                <button class="btn" onclick="show('view-reports')">Open</button>
+              </div>
+            </div>
+          </div>
+
+          <div id="view-items" class="hidden">
+            <div class="pagehead">
+              <h1>Manage item</h1>
+              <div class="right">
+                <button class="btn" onclick="seedItems()">Seed demo</button>
+                <button class="btn primary" onclick="openItemModal()">
+                  + Add item
+                </button>
+              </div>
+            </div>
+            <div class="toolbar">
+              <input
+                placeholder="Search item or SKU"
+                oninput="filterItems(this.value)"
+              />
+              <select onchange="filterCategory(this.value)">
+                <option value="">All categories</option>
+                <option>Electronics</option>
+                <option>Apparel</option>
+                <option>Office</option>
+              </select>
+            </div>
+            <table id="items-table" aria-label="Items">
+              <thead>
+                <tr>
+                  <th>SKU</th>
+                  <th>Item name</th>
+                  <th>Category</th>
+                  <th>On hand</th>
+                  <th>Reorder</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="items-body"></tbody>
+            </table>
+          </div>
+
+          <div id="view-categories" class="hidden">
+            <div class="pagehead">
+              <h1>Manage categories</h1>
+              <button class="btn primary" onclick="openCatModal()">
+                + Add category
+              </button>
+            </div>
+            <table id="cat-table">
+              <thead>
+                <tr>
+                  <th>Category</th>
+                  <th>Description</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="cat-body">
+                
+              </tbody>
+            </table>
+          </div>
+
+          <div id="view-transactions" class="hidden">
+            <div class="pagehead"><h1>Record transaction</h1></div>
+            <div class="card" style="margin-bottom: 12px">
+              <h3 style="margin-bottom: 10px">New movement</h3>
+              <div class="grid-2">
+                <div class="field">
+                  <label>Item</label
+                  ><select id="tx-item"></select>
+                </div>
+                <div class="field">
+                  <label>Action</label>
+                  <select id="tx-action">
+                    <option value="in">Add in</option>
+                    <option value="out">Take out</option>
+                    <option value="adjust">Adjust</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label>Amount</label
+                  ><input type="number" id="tx-qty" min="0" value="1" />
+                </div>
+                <div class="field">
+                  <label>Note (optional)</label
+                  ><input id="tx-note" placeholder="Reason" />
+                </div>
+              </div>
+              <div style="margin-top: 12px" class="right">
+                <button class="btn" onclick="resetTx()">Clear</button>
+                <button class="btn primary" onclick="commitTx()">Record</button>
+              </div>
+            </div>
+            <table id="tx-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Item</th>
+                  <th>Action</th>
+                  <th>Qty</th>
+                  <th>Note</th>
+                </tr>
+              </thead>
+              <tbody id="tx-body"></tbody>
+            </table>
+          </div>
+
+          <div id="view-suppliers" class="hidden">
+            <div class="pagehead">
+              <h1>Manage supplier</h1>
+              <button class="btn primary" onclick="openSupplierModal()">+ Add supplier</button>
+            </div>
+
+            <table id="supplier-table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Phone</th>
+                  <th>Email</th>
+                  <th>Address</th>
+                  <th style="width:120px;">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="supplier-body"></tbody>
+            </table>
+            </div>
+
+          <div id="view-po" class="hidden">
+            <div class="pagehead">
+              <h1>Create purchase order</h1>
+              <button class="btn primary" onclick="openPOModal()">+ New PO</button>
+            </div>
+            <table id="po-table">
+              <thead>
+                <tr>
+                  <th>PO #</th>
+                  <th>Supplier</th>
+                  <th>Order Date</th>
+                  <th>Items</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="po-body"></tbody>
+            </table>
+            </div>
+
+          <div id="view-reports" class="hidden">
+            <div class="pagehead"><h1>View report</h1></div>
+            <div class="card-grid">
+              <div class="card">
+                <h3>Low stock</h3>
+                <p class="muted">Items below reorder point</p>
+                <button class="btn" onclick="openLowStockReport()">Open</button>
+              </div>
+              <div class="card">
+                <h3>Valuation</h3>
+                <p class="muted">Simple average cost</p>
+                <button class="btn" onclick="openValuationReport()">Open</button>
+              </div>
+              <div class="card">
+                <h3>Movements</h3>
+                <p class="muted">Summary by date range</p>
+                <button class="btn" onclick="openMovementReport()">Open</button>
+              </div>
+            </div>
+          </div>
+          <!-- LOW STOCK REPORT PAGE -->
+          <div id="view-report-lowstock" class="hidden">
+            <div class="pagehead">
+              <h1>Low Stock Report</h1>
+              <button class="btn" onclick="show('view-reports')">Back</button>
+            </div>
+
+            <table>
+              <thead>
+                <tr>
+                  <th>Item</th>
+                  <th>Category</th>
+                  <th>Quantity</th>
+                  <th>Reorder Level</th>
+                </tr>
+              </thead>
+              <tbody id="lowstock-body"></tbody>
+            </table>
+          </div>
+
+          <!-- VALUATION REPORT PAGE -->
+          <div id="view-report-valuation" class="hidden">
+            <div class="pagehead">
+              <h1>Inventory Valuation</h1>
+              <button class="btn" onclick="show('view-reports')">Back</button>
+            </div>
+
+            <table>
+              <thead>
+                <tr>
+                  <th>Category</th>
+                  <th>Avg. Unit Price</th>
+                  <th>Total Items</th>
+                </tr>
+              </thead>
+              <tbody id="valuation-body"></tbody>
+            </table>
+          </div>
+
+          <!-- MOVEMENT REPORT PAGE -->
+          <div id="view-report-movements" class="hidden">
+            <div class="pagehead">
+              <h1>Movement Summary</h1>
+              <button class="btn" onclick="show('view-reports')">Back</button>
+            </div>
+
+            <div class="toolbar">
+              <input type="date" id="mv-start">
+              <input type="date" id="mv-end">
+              <button class="btn primary" onclick="loadMovementReport()">Filter</button>
+            </div>
+
+            <table>
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Item</th>
+                  <th>Type</th>
+                  <th>Qty</th>
+                  <th>Remarks</th>
+                </tr>
+              </thead>
+              <tbody id="movements-body"></tbody>
+            </table>
+          </div>
+
+        </main>
+      </div>
+    </section>
+
+    <div class="backdrop" id="item-modal">
+      <div class="modal">
+        <h3 style="margin: 0 0 8px">Add / Edit item</h3>
+        <div class="grid-2">
+  <div class="field">
+    <label>SKU</label><input id="m-sku" placeholder="e.g., EL-001" />
+  </div>
+
+  <div class="field">
+    <label>Item name</label>
+    <input id="m-name" placeholder="USB-C Cable" />
+  </div>
+
+  <div class="field">
+    <label>Category</label>
+    <select id="m-cat"></select>
+
+  </div>
+
+  <div class="field">
+    <label>On hand</label>
+    <input id="m-qty" type="number" min="0" value="0" />
+  </div>
+
+  <div class="field">
+    <label>Unit Price</label>
+    <input id="m-price" type="number" step="0.01" placeholder="0.00" />
+  </div>
+
+  <div class="field" style="grid-column: 1/-1">
+    <label>Reorder point</label>
+    <input id="m-reorder" type="number" min="0" value="0" />
+  </div>
+</div>
+
+        <div class="right" style="margin-top: 12px">
+          <button class="btn" onclick="closeItemModal()">Cancel</button
+          ><button class="btn primary" onclick="saveItem()">Save</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="backdrop" id="supplier-modal" style="display:none;">
+      <div class="modal">
+        <h3>Add Supplier</h3>
+
+        <div class="field"><label>Name</label><input id="sup-name"></div>
+        <div class="field"><label>Phone</label><input id="sup-phone"></div>
+        <div class="field"><label>Email</label><input id="sup-email"></div>
+        <div class="field"><label>Address</label><input id="sup-address"></div>
+
+        <div class="right" style="margin-top:12px">
+          <button class="btn" onclick="closeSupplierModal()">Cancel</button>
+          <button class="btn primary" onclick="saveSupplier()">Save</button>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="backdrop" id="cat-modal">
+      <div class="modal">
+        <h3 style="margin: 0 0 8px">Add / Edit category</h3>
+        <div class="grid-2">
+          <div class="field">
+            <label>Name</label
+            ><input id="cm-name" placeholder="Category name" />
+          </div>
+          <div class="field">
+            <label>Description</label
+            ><input id="cm-desc" placeholder="Short description" />
+          </div>
+        </div>
+        <div class="right" style="margin-top: 12px">
+          <button class="btn" onclick="closeCatModal()">Cancel</button
+          ><button class="btn primary" onclick="saveCat()">Save</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="toast" id="toast">Saved</div>
+
+        <div class="backdrop" id="register-modal">
+      <div class="modal">
+        <h3>Create New User</h3>
+
+        <div class="field">
+          <label>Username</label>
+          <input id="reg-username" placeholder="Username">
+        </div>
+
+        <div class="field">
+          <label>Password</label>
+          <input id="reg-password" type="password" placeholder="Password">
+        </div>
+
+        <div class="field">
+          <label>Role</label>
+          <select id="reg-role">
+            <option value="Staff">Staff</option>
+            <option value="Admin">Admin</option>
+          </select>
+        </div>
+
+        <div class="right" style="margin-top: 12px;">
+          <button class="btn" onclick="closeRegisterModal()">Cancel</button>
+          <button class="btn primary" onclick="registerUser()">Create User</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="backdrop" id="edit-supplier-modal" style="display:none;">
+      <div class="modal">
+        <h3>Edit Supplier</h3>
+
+        <input type="hidden" id="edit-supplier-id">
+
+        <div class="field">
+          <label>Name</label>
+          <input id="edit-supplier-name">
+        </div>
+
+        <div class="field">
+          <label>Phone</label>
+          <input id="edit-supplier-phone">
+        </div>
+
+        <div class="field">
+          <label>Email</label>
+          <input id="edit-supplier-email">
+        </div>
+
+        <div class="field">
+          <label>Address</label>
+          <input id="edit-supplier-address">
+        </div>
+
+        <div class="right" style="margin-top:12px;">
+          <button class="btn" onclick="closeEditSupplierModal()">Cancel</button>
+          <button class="btn primary" onclick="saveEditedSupplier()">Save changes</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="backdrop" id="delete-supplier-modal" style="display:none;">
+      <div class="modal">
+        <h3>Delete Supplier?</h3>
+        <p>This action cannot be undone.</p>
+
+        <input type="hidden" id="delete-supplier-id">
+
+        <div class="right" style="margin-top:12px;">
+          <button class="btn" onclick="closeDeleteSupplierModal()">Cancel</button>
+          <button class="btn danger" onclick="confirmDeleteSupplier()">Delete</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="backdrop" id="po-modal" style="display:none;">
+      <div class="modal">
+        <h3>Create Purchase Order</h3>
+
+        <div class="field">
+          <label>Supplier</label>
+          <select id="po-supplier"></select>
+        </div>
+
+        <div class="field">
+          <label>Item</label>
+          <select id="po-item"></select>
+        </div>
+
+        <div class="field">
+          <label>Quantity</label>
+          <input type="number" id="po-qty" min="1" value="1">
+        </div>
+
+        <div class="field">
+          <label>Expected Date</label>
+          <input type="date" id="po-date">
+        </div>
+
+        <div class="right" style="margin-top:12px;">
+          <button class="btn" onclick="closePOModal()">Cancel</button>
+          <button class="btn primary" onclick="savePO()">Create PO</button>
+        </div>
+      </div>
+    </div>
+
+  <div class="backdrop" id="edit-po-modal" style="display:none;">
+  <div class="modal">
+    <h3>Edit Purchase Order</h3>
+
+    <input type="hidden" id="edit-po-id">
+
+    <div class="field">
+      <label>Supplier</label>
+      <select id="edit-po-supplier"></select> 
+    </div>
+
+    <div class="field">
+      <label>Status</label>
+      <select id="edit-po-status">
+        <option value="Pending">Pending</option>
+        <option value="Delivered">Delivered</option>
+        <option value="Cancelled">Cancelled</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label>Order Date</label>
+      <input type="date" id="edit-po-date"> 
+    </div>
+
+    <div class="right">
+      <button class="btn" onclick="closeEditPOModal()">Cancel</button>
+      <button class="btn primary" onclick="saveEditPO()">Save Changes</button>
+    </div>
+  </div>
+</div>
+
+
+<div class="backdrop" id="delete-po-modal" style="display:none;">
+  <div class="modal">
+    <h3>Delete Purchase Order?</h3>
+    <p>This action cannot be undone.</p>
+
+    <input type="hidden" id="delete-po-id">
+
+    <div class="right">
+      <button class="btn" onclick="closeDeletePOModal()">Cancel</button>
+      <button class="btn danger" onclick="confirmDeletePO()">Delete</button>
+    </div>
+  </div>
+</div>
+
+
+
+    <script>
+      async function loginUser() {
+    const username = document.getElementById("login-username").value.trim();
+    const pass = document.getElementById("login-pass").value.trim();
+
+    const msg = document.getElementById("login-error");
+    msg.textContent = "";
+
+    const res = await fetch("api/login.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password: pass })
+    });
+
+    const out = await res.json();
+
+    if (!out.success) {
+        msg.textContent = out.error;   // show error
+        return;
+    }
+
+    // login OK → show app
+    document.getElementById("view-login").classList.add("hidden");
+    document.getElementById("view-app").classList.remove("hidden");
+
+    toast("Welcome " + out.username);
+    // Now allowed to load protected data
+loadItems();
+loadCategories();
+loadTransactions();
+loadPOList();
+
+}
+async function logoutUser() {
+    await fetch("api/logout.php");
+    location.reload();
+}
+
+      
+
+      function openRegisterModal() {
+        document.getElementById("register-modal").style.display = "flex";
+      }
+
+      function closeRegisterModal() {
+        document.getElementById("register-modal").style.display = "none";
+      }
+
+
+      async function registerUser() {
+        const username = document.getElementById("reg-username").value.trim();
+        const password = document.getElementById("reg-password").value.trim();
+        const role = document.getElementById("reg-role").value;
+
+        const res = await fetch("api/register_user.php", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({
+                username: username,
+                password: password,
+                role: role
+            })
+        });
+
+        const out = await res.json();
+        console.log(out);
+
+        if (out.success) {
+          closeRegisterModal();
+            alert("User registered successfully!");
+        } else {
+            alert("Error: " + out.error);
+        }
+    }
+
+
+      function show(id) {
+        for (const v of [
+  "view-dashboard",
+  "view-items",
+  "view-categories",
+  "view-transactions",
+  "view-suppliers",
+  "view-po",
+  "view-reports",
+  "view-report-lowstock",
+  "view-report-valuation",
+  "view-report-movements"
+]) {
+  document.getElementById(v).classList.toggle("hidden", v !== id);
+}
+
+
+        // Auto-load
+        if (id === "view-suppliers") loadSuppliers();
+        if (id === "view-po") loadPOList();
+
+        document
+          .querySelectorAll(".nav a")
+          .forEach((a) => a.classList.remove("active"));
+        const map = {
+  "view-dashboard": 0,
+  "view-items": 1,
+  "view-categories": 2,
+  "view-transactions": 3,
+  "view-suppliers": 4,
+  "view-po": 5,
+  "view-reports": 6,
+  "view-report-lowstock": 6,
+  "view-report-valuation": 6,
+  "view-report-movements": 6
+};
+
+        document.querySelectorAll(".nav a")[map[id]].classList.add("active");
+      }
+
+      const items = [];
+      let editIndex = -1;
+
+      function seedItems() {
+        if (items.length) return;
+        [
+          ["EL-001", "USB-C Cable 1m", "Electronics", 120, 50],
+          ["AP-223", "Cotton T-Shirt L", "Apparel", 12, 20],
+          ["OF-010", "A4 Paper (500)", "Office", 48, 10],
+        ].forEach((r) =>
+          items.push({
+            sku: r[0],
+            name: r[1],
+            cat: r[2],
+            qty: r[3],
+            reorder: r[4],
+          })
+        );
+        renderItems();
+        toast("Seeded 3 demo items");
+        refreshTxItemOptions();
+      }
+
+      function renderItems() {
+        const tbody = document.getElementById("items-body");
+        tbody.innerHTML = items
+          .map(
+            (it, i) => `<tr>
+      <td>${it.sku}</td><td>${it.name}</td><td>${it.cat}</td>
+      <td>${it.qty} ${
+              it.qty <= it.reorder ? '<span class="chip low">Low</span>' : ""
+            }</td><td>${it.reorder}</td>
+      <td class="right"><button class="btn" onclick="editItem(${i})">Edit</button>
+      <button class="btn danger" onclick="deleteItem(${i})">Delete</button></td>
+    </tr>`
+          )
+          .join("");
+      }
+
+      function filterItems(q) {
+        q = q.toLowerCase();
+        const rows = [...document.querySelectorAll("#items-body tr")];
+        rows.forEach((r) => {
+          const t = r.textContent.toLowerCase();
+          r.style.display = t.includes(q) ? "" : "none";
+        });
+      }
+      function filterCategory(val) {
+        const idx = 2;
+        const rows = [...document.querySelectorAll("#items-body tr")];
+        rows.forEach((r) => {
+          const cat = r.children[idx].textContent;
+          r.style.display = !val || cat === val ? "" : "none";
+        });
+      }
+
+      function openItemModal() {
+        loadCategoryDropdown();
+    window.__editItemID = null;
+        editIndex = -1;
+        document.getElementById("item-modal").style.display = "flex";
+        document.getElementById("m-sku").value = "";
+        document.getElementById("m-name").value = "";
+        document.getElementById("m-cat").value = "Electronics";
+        document.getElementById("m-qty").value = 0;
+        document.getElementById("m-reorder").value = 0;
+      }
+      function closeItemModal() {
+        document.getElementById("item-modal").style.display = "none";
+      }
+async function loadCategoryDropdown() {
+    const res = await fetch("api/get_categories.php");
+    const data = await res.json();
+
+    const sel = document.getElementById("m-cat");
+    sel.innerHTML = data
+        .map(c => `<option value="${c.category_name}">${c.category_name}</option>`)
+        .join("");
+}
+
+      async function saveItem() {
+    const data = {
+        item_name: document.getElementById("m-name").value.trim(),
+        category: document.getElementById("m-cat").value.trim(),
+        quantity: Number(document.getElementById("m-qty").value || 0),
+        reorder_level: Number(document.getElementById("m-reorder").value || 0),
+        unit_price: parseFloat(document.getElementById("m-price").value || 0),
+
+    };
+
+    // ADD THIS — if editing, attach item_id
+    if (window.__editItemID) {
+        data.item_id = window.__editItemID;
+    }
+
+    if (!data.item_name) {
+        alert("Item name is required.");
+        return;
+    }
+
+    console.log("Sending to server:", data);
+
+    try {
+        // CHANGE THIS — choose add or update automatically
+        const res = await fetch(
+            window.__editItemID ? "api/test_update_item.php" : "api/add_item.php",
+        {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data),
+        });
+
+        const raw = await res.text();
+        console.log("RAW RESPONSE:", raw);
+
+        let json;
+        try {
+            json = JSON.parse(raw);
+        } catch (e) {
+            console.error("JSON PARSE ERROR:", raw);
+            alert("Server returned invalid JSON. Check console.");
+            return;
+        }
+
+        if (json.success) {
+            // RESET EDIT MODE
+            window.__editItemID = null;
+
+            closeItemModal();
+            await loadItems();
+            toast("Saved Successfully");
+        } else {
+            alert("Save failed: " + json.error);
+        }
+
+    } catch (err) {
+        console.error("Fetch Error:", err);
+        alert("Network or server error.");
+    }
+}
+async function loadCategories() {
+  console.log("💡 loadCategories() CALLED");
+
+    try {
+        const res = await fetch("api/get_categories.php");
+        const data = await res.json();
+
+        const tbody = document.getElementById("cat-body");
+
+        tbody.innerHTML = data.map(cat => `
+            <tr data-id="${cat.category_id}">
+                <td>${cat.category_name}</td>
+                <td>${cat.description}</td>
+                <td class="right">
+                    <button class="btn" onclick="editCategory(${cat.category_id}, '${cat.category_name}', '${cat.description}')">Edit</button>
+                    <button class="btn danger" onclick="deleteCategory(${cat.category_id})">Delete</button>
+                </td>
+            </tr>
+        `).join("");
+
+    } catch (err) {
+        console.error("loadCategories() ERROR:", err);
+        document.getElementById("cat-body").innerHTML =
+            `<tr><td colspan="3">Error loading categories</td></tr>`;
+    }
+}
+async function deleteCategory(id) {
+    if (!confirm("Delete this category?")) return;
+
+    const res = await fetch("api/delete_category.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ category_id: id })
+    });
+
+    const out = await res.json();
+
+    if (out.success) {
+        loadCategories();
+        toast("Category deleted");
+    } else {
+        alert("Delete failed: " + out.error);
+    }
+}
+
+
+async function editDBItem(id) {
+    const res = await fetch(`api/get_single_item.php?id=${id}`);
+    const item = await res.json();
+
+    // Fill modal
+    await loadCategoryDropdown();
+    document.getElementById("m-name").value = item.item_name;
+    document.getElementById("m-cat").value = item.category;
+    document.getElementById("m-qty").value = item.quantity;
+    document.getElementById("m-reorder").value = item.reorder_level;
+    document.getElementById("m-price").value = item.unit_price;
+
+
+    // Store ID for update
+    window.__editItemID = id;
+
+    document.getElementById("item-modal").style.display = "flex";
+}
+async function deleteDBItem(id) {
+    if (!confirm("Delete this item?")) return;
+
+    const res = await fetch("api/delete_item.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ item_id: id }),
+    });
+
+    const out = await res.json();
+
+    if (out.success) {
+        loadItems();
+        toast("Item deleted");
+    } else {
+        alert("Delete failed.");
+    }
+}
+
+      function editItem(i) {
+        editIndex = i;
+        const it = items[i];
+        document.getElementById("m-sku").value = it.sku;
+        document.getElementById("m-name").value = it.name;
+        document.getElementById("m-cat").value = it.cat;
+        document.getElementById("m-qty").value = it.qty;
+        document.getElementById("m-reorder").value = it.reorder;
+        document.getElementById("item-modal").style.display = "flex";
+      }
+      function deleteItem(i) {
+        if (confirm("Delete this item?")) {
+          items.splice(i, 1);
+          renderItems();
+          refreshTxItemOptions();
+        }
+      }
+
+      function openCatModal() {
+        document.getElementById("cm-name").value = "";
+        document.getElementById("cm-desc").value = "";
+        document.getElementById("cat-modal").style.display = "flex";
+      }
+      function closeCatModal() {
+        document.getElementById("cat-modal").style.display = "none";
+      }
+      async function saveCat() {
+    const name = document.getElementById("cm-name").value.trim();
+    const desc = document.getElementById("cm-desc").value.trim();
+
+    if (!name) return alert("Name required");
+
+    const data = { category_name: name, description: desc };
+
+    if (window.__editCatID) {
+        data.category_id = window.__editCatID;
+    }
+
+    const res = await fetch(
+        window.__editCatID 
+            ? "api/update_category.php" 
+            : "api/add_category.php",
+    {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+    });
+
+    const out = await res.json();
+
+    if (out.success) {
+        toast(window.__editCatID ? "Category updated" : "Category added");
+
+        window.__editCatID = null;
+        closeCatModal();
+        loadCategories();
+    } else {
+        alert("❌ Error: " + out.error);
+    }
+}
+
+
+function editCategory(id, name, desc) {
+    window.__editCatID = id;
+
+    document.getElementById("cm-name").value = name;
+    document.getElementById("cm-desc").value = desc;
+
+    document.getElementById("cat-modal").style.display = "flex";
+}
+
+      function editCat(btn) {
+        const tr = btn.closest("tr");
+        const tds = tr.querySelectorAll("td");
+        document.getElementById("cm-name").value = tds[0].textContent.trim();
+        document.getElementById("cm-desc").value = tds[1].textContent.trim();
+        document.getElementById("cat-modal").style.display = "flex";
+
+        const save = saveCat;
+        window.saveCat = function () {
+          tds[0].textContent = document.getElementById("cm-name").value.trim();
+          tds[1].textContent = document.getElementById("cm-desc").value.trim();
+          closeCatModal();
+          toast("Category updated");
+          window.saveCat = save;
+        };
+      }
+      function delRow(btn) {
+        btn.closest("tr").remove();
+      }
+
+      const tx = [];
+      function refreshTxItemOptions() {
+    const sel = document.getElementById("tx-item");
+
+    sel.innerHTML = DB_ITEMS.map(
+        item =>
+        `<option value="${item.item_id}">
+            ${item.item_name}
+        </option>`
+    ).join("");
+}
+
+
+      function resetTx() {
+        document.getElementById("tx-item").selectedIndex = 0;
+        document.getElementById("tx-action").value = "in";
+        document.getElementById("tx-qty").value = 1;
+        document.getElementById("tx-note").value = "";
+      }
+      async function commitTx() {
+    if (!DB_ITEMS.length) {
+        alert("Add an item first");
+        return;
+    }
+
+    const itemId = document.getElementById("tx-item").value;
+    const action = document.getElementById("tx-action").value;
+    const qty = Number(document.getElementById("tx-qty").value || 0);
+    const note = document.getElementById("tx-note").value.trim();
+
+    if (!qty || qty <= 0) {
+        alert("Quantity must be > 0");
+        return;
+    }
+
+    // Build payload
+    const data = {
+        item_id: itemId,
+        type: action,
+        quantity: qty,
+        note: note
+    };
+
+    // Send to backend
+    const res = await fetch("api/add_transaction.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+    });
+
+    const out = await res.json();
+
+    if (!out.success) {
+        alert("Error: " + out.error);
+        return;
+    }
+
+    toast("Transaction recorded");
+
+    await loadTransactions();
+    await loadItems(); // refresh item quantities
+    await loadLowStockReport();
+}
+async function loadTransactions() {
+    const res = await fetch("api/get_transactions.php");
+    const data = await res.json();
+
+    const tbody = document.getElementById("tx-body");
+
+    tbody.innerHTML = data.map(t => `
+        <tr>
+            <td>${t.tx_date ?? ""}</td>
+            <td>${t.item_id} — ${t.item_name ?? ""}</td>
+            <td>${t.type}</td>
+            <td>${t.quantity}</td>
+            <td>${t.remarks ?? ""}</td>
+        </tr>
+    `).join("");
+}
+
+
+
+      function renderTx() {
+    const tbody = document.getElementById("tx-body");
+
+    tbody.innerHTML = tx
+        .map(t => `
+            <tr>
+                <td>${t.tx_date ?? ""}</td>
+                <td>${t.item_id} — ${t.item_name}</td>
+                <td>${t.action}</td>
+                <td>${t.qty}</td>
+                <td>${t.note || ""}</td>
+            </tr>
+        `)
+        .join("");
+}
+
+      function openSupplierModal() {
+    document.getElementById("supplier-modal").style.display = "flex";
+}
+function closeSupplierModal() {
+    document.getElementById("supplier-modal").style.display = "none";
+}
+
+      async function saveSupplier() {
+        const supplier = {
+            supplier_name: document.getElementById("sup-name").value.trim(),
+            phone: document.getElementById("sup-phone").value.trim(),
+            email: document.getElementById("sup-email").value.trim(),
+            address: document.getElementById("sup-address").value.trim(),
+        };
+
+        const res = await fetch("api/add_supplier.php", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(supplier)
+        });
+
+        const out = await res.json();
+
+        if (out.success) {
+            closeSupplierModal();
+            toast("Supplier added!");
+
+            // INSERT NEW SUPPLIER AT THE TOP OF THE LIST
+            prependSupplierToList({
+                supplier_id: out.supplier_id,
+                ...supplier
+            });
+
+        } else {
+            alert("Error: " + out.error);
+        }
+    }
+
+      async function loadSuppliers() {
+        const res = await fetch("api/get_suppliers.php");
+        const suppliers = await res.json();
+
+        const tbody = document.getElementById("supplier-body");
+        tbody.innerHTML = "";
+
+        suppliers.forEach(s => {
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+                <td>${s.supplier_name}</td>
+                <td>${s.phone}</td>
+                <td>${s.email}</td>
+                <td>${s.address}</td>
+                <td>
+                    <button class="btn small" onclick="openEditSupplierModal(${s.supplier_id}, '${s.supplier_name}', '${s.phone}', '${s.email}', '${s.address}')">Edit</button>
+                    <button class="btn small danger" onclick="openDeleteSupplierModal(${s.supplier_id})">Delete</button>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
+    }
+
+      function openEditSupplierModal(id, name, phone, email, address) {
+        document.getElementById("edit-supplier-id").value = id;
+        document.getElementById("edit-supplier-name").value = name;
+        document.getElementById("edit-supplier-phone").value = phone;
+        document.getElementById("edit-supplier-email").value = email;
+        document.getElementById("edit-supplier-address").value = address;
+        document.getElementById("edit-supplier-modal").style.display = "flex";
+    }
+
+    function closeEditSupplierModal() {
+        document.getElementById("edit-supplier-modal").style.display = "none";
+    }
+
+    async function saveEditedSupplier() {
+        const supplier = {
+            supplier_id: document.getElementById("edit-supplier-id").value,
+            supplier_name: document.getElementById("edit-supplier-name").value.trim(),
+            phone: document.getElementById("edit-supplier-phone").value.trim(),
+            email: document.getElementById("edit-supplier-email").value.trim(),
+            address: document.getElementById("edit-supplier-address").value.trim()
+        };
+
+        const res = await fetch("api/update_supplier.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(supplier)
+        });
+
+        const out = await res.json();
+        if (out.success) {
+            closeEditSupplierModal();
+            loadSuppliers();  // refresh table
+            toast("Supplier updated!");
+        } else {
+            alert("Error: " + out.error);
+        }
+    }
+
+    function openDeleteSupplierModal(id) {
+      document.getElementById("delete-supplier-id").value = id;
+      document.getElementById("delete-supplier-modal").style.display = "flex";
+    }
+
+    function closeDeleteSupplierModal() {
+      document.getElementById("delete-supplier-modal").style.display = "none";
+    }
+
+    async function confirmDeleteSupplier() {
+      const id = document.getElementById("delete-supplier-id").value;
+
+      const res = await fetch("api/delete_supplier.php", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ supplier_id: id })
+      });
+
+      const out = await res.json();
+      if (out.success) {
+          closeDeleteSupplierModal();
+          loadSuppliers();
+          toast("Supplier deleted");
+      } else {
+          alert("Error: " + out.error);
+      }
+    }
+
+      function prependSupplierToList(s) {
+    const tbody = document.getElementById("supplier-body");
+
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+        <td>${s.supplier_name}</td>
+        <td>${s.phone}</td>
+        <td>${s.email}</td>
+        <td>${s.address}</td>
+        <td>
+            <button class="btn small" onclick="openEditSupplierModal(${s.supplier_id}, '${s.supplier_name}', '${s.phone}', '${s.email}', '${s.address}')">Edit</button>
+            <button class="btn small danger" onclick="openDeleteSupplierModal(${s.supplier_id})">Delete</button>
+        </td>
+    `;
+
+    tbody.prepend(tr);
+}
+
+
+      // Open/close modal and load dropdowns
+function openPOModal() {
+    loadPOSuppliers();
+    loadPOItems();
+
+    // Default order date = today
+    document.getElementById("po-date").value =
+        new Date().toISOString().split("T")[0];
+
+    document.getElementById("po-modal").style.display = "flex";
+}
+
+function closePOModal() {
+    document.getElementById("po-modal").style.display = "none";
+}
+
+// load suppliers into PO modal
+async function loadPOSuppliers() {
+    try {
+        const res = await fetch("api/get_suppliers.php");
+        if (!res.ok) throw new Error("Network response not ok");
+        const suppliers = await res.json();
+        const select = document.getElementById("po-supplier");
+        select.innerHTML = "";
+        suppliers.forEach(s => {
+            const opt = document.createElement("option");
+            opt.value = s.supplier_id;
+            opt.textContent = s.supplier_name;
+            select.appendChild(opt);
+        });
+    } catch (err) {
+        console.error("loadPOSuppliers:", err);
+        alert("Failed loading suppliers. Check console.");
+    }
+}
+
+// load items into PO modal
+async function loadPOItems() {
+    try {
+        const res = await fetch("api/get_items.php");
+        if (!res.ok) throw new Error("Network response not ok");
+        const items = await res.json();
+        const select = document.getElementById("po-item");
+        select.innerHTML = "";
+        items.forEach(i => {
+            const opt = document.createElement("option");
+            opt.value = i.item_id;
+            opt.textContent = `${i.item_id} — ${i.item_name}`;
+            select.appendChild(opt);
+        });
+    } catch (err) {
+        console.error("loadPOItems:", err);
+        alert("Failed loading items. Check console.");
+    }
+}
+
+// Save PO — sends items as an array (single-line for now)
+async function savePO() {
+    const supplier_id = parseInt(document.getElementById("po-supplier").value || 0, 10);
+    const item_id     = parseInt(document.getElementById("po-item").value || 0, 10);
+    const quantity    = parseInt(document.getElementById("po-qty").value || 0, 10);
+    const order_date  = document.getElementById("po-date").value; // YYYY-MM-DD
+
+    if (!supplier_id) { alert("Please select supplier"); return; }
+    if (!item_id)     { alert("Please select item"); return; }
+    if (!quantity || quantity <= 0) { alert("Quantity must be > 0"); return; }
+    if (!order_date)  { alert("Please select order date"); return; }
+
+    // Build payload (single item). If you later support multiple items, send items: [...]
+    const payload = {
+        supplier_id: supplier_id,
+        order_date: order_date,
+        items: [
+            { item_id: item_id, quantity: quantity, price: 0.0 }
+        ]
+    };
+
+    const res = await fetch("api/add_po.php", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(payload)
+    });
+
+    const text = await res.text(); // read text to detect invalid responses
+    console.log("add_po raw response:", text);
+
+    let out;
+    try {
+        out = JSON.parse(text);
+    } catch (e) {
+        alert("Server error: invalid response. Check console.");
+        console.error("Invalid JSON from add_po.php:", text);
+        return;
+    }
+
+    if (out.success) {
+        toast("Purchase order created: #" + out.po_id);
+        closePOModal();
+        loadPOList();
+
+    } else {
+        // show detailed error if available
+        alert("Error: " + (out.error || "Unknown") + (out.details ? "\nDetails: "+out.details.join(", ") : ""));
+        console.error("add_po error detail:", out.detail || out);
+    }
+}
+
+async function loadPOList() {
+    try {
+        const res = await fetch("api/get_purchase_orders.php");
+        const list = await res.json();
+
+        const tbody = document.getElementById("po-body");
+        tbody.innerHTML = "";
+
+        list.forEach(po => {
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+              <td>#${po.po_id}</td>
+              <td>${po.supplier_name || "-"}</td>
+              <td>${po.order_date}</td>
+              <td>${po.items || "-"}</td>
+              <td>${po.status}</td>
+              <td>
+        <button class="btn small" onclick="openEditPOModal(${po.po_id})">Edit</button>
+        <button class="btn small danger" onclick="openDeletePOModal(${po.po_id})">Delete</button>
+    </td>
+`;
+
+            tbody.appendChild(tr);
+        });
+
+    } catch (err) {
+        console.error("loadPOList error:", err);
+    }
+}
+
+// ----------------------
+// EDIT PO
+// ----------------------
+async function openEditPOModal(po_id) {
+    try {
+        // Load suppliers first so we can set the value later
+        const supplierRes = await fetch("api/get_suppliers.php");
+        const suppliers = await supplierRes.json();
+        const supplierSelect = document.getElementById("edit-po-supplier");
+        supplierSelect.innerHTML = "";
+        suppliers.forEach(s => {
+            const opt = document.createElement("option");
+            opt.value = s.supplier_id;
+            opt.textContent = s.supplier_name;
+            supplierSelect.appendChild(opt);
+        });
+
+        // Get PO details (we use get_purchase_orders.php which now includes supplier_id)
+        const res = await fetch("api/get_purchase_orders.php");
+        const allPO = await res.json();
+
+        // find the PO row
+        const po = allPO.find(p => Number(p.po_id) === Number(po_id));
+
+        if (!po) {
+            // as a fallback, request a single-po endpoint if you have one, or show an error
+            alert("Error: PO not found");
+            console.error("openEditPOModal: PO not found in get_purchase_orders result", po_id, allPO);
+            return;
+        }
+
+        // Fill modal fields (ensure IDs exist)
+        document.getElementById("edit-po-id").value = po.po_id;
+        // supplier_id is now present thanks to the API fix
+        document.getElementById("edit-po-supplier").value = po.supplier_id || "";
+        document.getElementById("edit-po-status").value = po.status || "Pending";
+
+        // Ensure date format is YYYY-MM-DD (your DB uses order_date)
+        // If server returns dd/mm/yyyy you would need to parse; assuming it's YYYY-MM-DD already:
+        document.getElementById("edit-po-date").value = po.order_date || "";
+
+        document.getElementById("edit-po-modal").style.display = "flex";
+    } catch (err) {
+        console.error("openEditPOModal error:", err);
+        alert("Failed to open edit modal — check console.");
+    }
+}
+
+
+
+function closeEditPOModal() {
+    document.getElementById("edit-po-modal").style.display = "none";
+}
+
+async function saveEditPO() {
+    const po = {
+        po_id: document.getElementById("edit-po-id").value,
+        supplier_id: document.getElementById("edit-po-supplier").value,
+        order_date: document.getElementById("edit-po-date").value,
+        status: document.getElementById("edit-po-status").value
+    };
+
+    const res = await fetch("api/update_po.php", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(po)
+    });
+
+    const out = await res.json();
+
+    if (out.success) {
+    closeEditPOModal();
+    loadPOList();
+    await loadItems();     // ← REFRESH ITEM QUANTITIES
+    await loadLowStockReport();
+    toast("PO updated!");
+}
+
+}
+
+// ----------------------
+// DELETE PO
+// ----------------------
+function openDeletePOModal(po_id) {
+    document.getElementById("delete-po-id").value = po_id;
+    document.getElementById("delete-po-modal").style.display = "flex";
+}
+
+function closeDeletePOModal() {
+    document.getElementById("delete-po-modal").style.display = "none";
+}
+
+async function confirmDeletePO() {
+    const po_id = document.getElementById("delete-po-id").value;
+
+    const res = await fetch("api/delete_po.php", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({ po_id })
+    });
+
+    const out = await res.json();
+
+    if (out.success) {
+        closeDeletePOModal();
+        loadPOList();
+        toast("PO deleted!");
+    } else {
+        alert("Error: " + out.error);
+    }
+}
+
+      function toast(msg) {
+        const el = document.getElementById("toast");
+        el.textContent = msg;
+        el.style.display = "block";
+        setTimeout(() => (el.style.display = "none"), 1800);
+      }
+
+      async function loadItems() {
+    const res = await fetch("api/get_items.php");
+    const data = await res.json();
+
+    // SAVE ITEMS GLOBALLY
+    DB_ITEMS = data;
+
+    // Render table
+    const tbody = document.getElementById("items-body");
+    tbody.innerHTML = data
+        .map(
+            (row) => `
+                <tr>
+                    <td>${row.item_id}</td>
+                    <td>${row.item_name}</td>
+                    <td>${row.category}</td>
+                    <td>${row.quantity}</td>
+                    <td>${row.reorder_level}</td>
+                    <td class="right">
+                        <button class="btn" onclick="editDBItem(${row.item_id})">Edit</button>
+                        <button class="btn danger" onclick="deleteDBItem(${row.item_id})">Delete</button>
+                    </td>
+                </tr>
+            `
+        )
+        .join("");
+
+    // UPDATE TRANSACTION DROPDOWN
+    refreshTxItemOptions();
+}
+    window.onload = () => {
+    
+};
+
+function openLowStockReport() {
+    show('view-report-lowstock');
+    loadLowStockReport();
+}
+
+function openValuationReport() {
+    show('view-report-valuation');
+    loadValuationReport();
+}
+
+function openMovementReport() {
+    show('view-report-movements');
+}
+
+async function loadLowStockReport() {
+    const res = await fetch("api/get_low_stock.php");
+    const data = await res.json();
+
+    const tbody = document.getElementById("lowstock-body");
+    tbody.innerHTML = data.map(r => `
+        <tr>
+            <td>${r.item_name}</td>
+            <td>${r.category_name ?? '-'}</td>
+            <td>${r.quantity}</td>
+            <td>${r.reorder_level}</td>
+        </tr>
+    `).join("");
+}
+
+async function loadValuationReport() {
+    const res = await fetch("api/get_valuation.php");
+    const data = await res.json();
+
+    const tbody = document.getElementById("valuation-body");
+    tbody.innerHTML = data.map(r => `
+        <tr>
+            <td>${r.category_name ?? '-'}</td>
+            <td>${Number(r.avg_price).toFixed(2)}</td>
+            <td>${r.total_items}</td>
+        </tr>
+    `).join("");
+}
+
+async function loadMovementReport() {
+    const start = document.getElementById("mv-start").value;
+    const end   = document.getElementById("mv-end").value;
+
+    const res = await fetch("api/get_movement_report.php", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({ start, end })
+    });
+
+    const data = await res.json();
+
+    const tbody = document.getElementById("movements-body");
+    tbody.innerHTML = data.map(r => `
+        <tr>
+            <td>${r.date}</td>
+            <td>${r.item_name}</td>
+            <td>${r.type}</td>
+            <td>${r.quantity}</td>
+            <td>${r.remarks ?? ''}</td>
+        </tr>
+    `).join("");
+}
+
+
+
+    </script>
+  </body>
+</html>
